@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "mObywatel - Weryfikacja Stron Gov.pl",
+  "version": "1.0",
+  "description": "Weryfikuj autentyczność stron gov.pl za pomocą aplikacji mObywatel",
+  "permissions": [
+    "activeTab"
+  ],
+  "icons": {
+    "16": "icons/16x16.png",
+    "32": "icons/32x32.png",
+    "48": "icons/48x48.png",
+    "128": "icons/128x128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "mObywatel - Weryfikacja",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/16x16.png",
+      "32": "icons/32x32.png",
+      "48": "icons/48x48.png",
+      "128": "icons/128x128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*.gov.pl/*", "*://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["safe_domains.csv"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
