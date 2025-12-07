@@ -1,12 +1,8 @@
-// Background service worker for extension icon management
-
-// Listen for messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'updateIcon') {
     const tabId = sender.tab.id;
 
     if (request.verified === true) {
-      // Green checkmark - verified gov.pl site
       chrome.action.setTitle({
         tabId: tabId,
         title: "✅ Zweryfikowana strona gov.pl"
@@ -23,7 +19,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       });
 
     } else if (request.verified === false) {
-      // Red warning - suspicious site
       chrome.action.setTitle({
         tabId: tabId,
         title: "⚠️ Strona niezweryfikowana - możliwe oszustwo!"
