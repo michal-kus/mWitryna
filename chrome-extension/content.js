@@ -1,15 +1,10 @@
-// mObywatel Gov.pl Verification Extension
-// Auto-injects verification module on all .gov.pl websites
-
 (function() {
-  // Prevent multiple injections
   if (window.mobywatelVerifyInjected) return;
   window.mobywatelVerifyInjected = true;
 
   const currentUrl = window.location.href;
   const currentDomain = window.location.hostname;
 
-  // Load safe domains and verify
   fetch(chrome.runtime.getURL('safe_domains.csv'))
     .then(response => response.text())
     .then(csv => {
@@ -18,17 +13,14 @@
         .map(line => line.trim())
         .filter(line => line.length > 0);
 
-      // Check if current domain is in safe list
       const isVerified = safeDomains.includes(currentDomain);
 
-      // Check if domain looks like gov site but isn't verified
       const looksLikeGov = currentDomain.includes('gov') ||
                            currentDomain.includes('podatk') ||
                            currentDomain.includes('epuap') ||
                            currentDomain.includes('obywatel') ||
                            currentDomain.includes('urzad');
 
-      // Update extension icon only for gov-like sites
       if (looksLikeGov) {
         chrome.runtime.sendMessage({
           action: 'updateIcon',
@@ -36,13 +28,11 @@
         });
       }
 
-      // If not verified but looks like gov site, show warning
       if (!isVerified && looksLikeGov) {
         showPhishingWarning();
         return;
       }
 
-      // Log verification status
       if (isVerified) {
         console.log('✅ mObywatel - Strona zweryfikowana');
         console.log('✓ Zweryfikowana strona gov.pl');
@@ -53,7 +43,6 @@
     });
 })();
 
-// Show phishing warning for suspicious sites
 function showPhishingWarning() {
   const warning = document.createElement('div');
   warning.style.cssText = `
